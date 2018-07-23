@@ -1,0 +1,7 @@
+
+**/.vs/
+*.user
+**/Debug/
+**/obj/
+.cproject
+.project

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidionetteSample", "MidionetteSample\MidionetteSample.csproj", "{63A84A93-C2F9-4789-A411-0C6377314D3B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Midionette", "..\src\Midionette\Midionette.vcxproj", "{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63A84A93-C2F9-4789-A411-0C6377314D3B}.Debug|x64.ActiveCfg = Debug|x64
+		{63A84A93-C2F9-4789-A411-0C6377314D3B}.Debug|x64.Build.0 = Debug|x64
+		{63A84A93-C2F9-4789-A411-0C6377314D3B}.Release|x64.ActiveCfg = Release|x64
+		{63A84A93-C2F9-4789-A411-0C6377314D3B}.Release|x64.Build.0 = Release|x64
+		{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB}.Debug|x64.ActiveCfg = Debug|x64
+		{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB}.Debug|x64.Build.0 = Debug|x64
+		{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB}.Release|x64.ActiveCfg = Release|x64
+		{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E1E0EA04-3150-4EAB-B848-1382D9B77FB6}
+	EndGlobalSection
+EndGlobal
