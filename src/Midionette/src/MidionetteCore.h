@@ -14,9 +14,14 @@ namespace Elgraiv {
 namespace Midionette {
 namespace Unmanaged {
 
+using MidiOpenedCallback = std::function<void()>;
+using MidiClosedCallback = std::function<void()>;
+using DataReceivedCallback = std::function<void(uint8_t, uint8_t, uint8_t, uint32_t)>;
+
 struct MidiCallbackFunctions {
-	std::function<void()> opened;
-	std::function<void()> closed;
+	MidiOpenedCallback opened;
+	MidiClosedCallback closed;
+	DataReceivedCallback dataReceived;
 };
 
 struct MidiDevice {
@@ -30,6 +35,7 @@ public:
 	~MidiInputCore();
 
 	void SetCallback(MidiCallbackFunctions& functions);
+	bool Initialize(uint32_t deviceId);
 
 	static uint32_t GetNumDevices();
 	static void GetDevices(std::vector<MidiDevice>& devices);

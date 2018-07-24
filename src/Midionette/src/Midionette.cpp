@@ -14,6 +14,12 @@ std::function<void()> CreateCallback(gcroot<System::Action^>& del) {
 	return [del]() {del->Invoke(); };
 }
 
+Unmanaged::DataReceivedCallback CreateCallback(gcroot<System::Action<uint8_t,uint8_t,uint8_t,uint32_t>^>& del) {
+	return [del](uint8_t status, uint8_t data0, uint8_t data1, uint32_t timestamp) {
+		del->Invoke(status, data0, data1, timestamp); 
+	};
+}
+
 }
 
 public value struct MidiData {
@@ -73,6 +79,8 @@ public:
 		functions.opened = CreateCallback(actionOpened);
 		gcroot<System::Action^> actionClosed(gcnew System::Action(this, &MidiInput::OnMidiClosed));
 		functions.closed = CreateCallback(actionClosed);
+		gcroot<System::Action<uint8_t, uint8_t, uint8_t, uint32_t>^> actionDataReceived(gcnew System::Action<uint8_t, uint8_t, uint8_t, uint32_t>(this, &MidiInput::OnMidiDataReceived));
+		functions.dataReceived = CreateCallback(actionDataReceived);
 		_core->SetCallback(functions);
 	}
 
@@ -85,6 +93,13 @@ public:
 		delete _core;
 		_core = nullptr;
 		this->!MidiInput();
+	}
+
+	bool Initialize(System::UInt32 deviceId) {
+		if (_core) {
+			return _core->Initialize(deviceId);
+		}
+		return false;
 	}
 
 	static System::UInt32 GetNumDevices() {

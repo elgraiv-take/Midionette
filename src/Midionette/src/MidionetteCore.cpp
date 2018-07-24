@@ -37,6 +37,12 @@ private:
 			m_functions.closed();
 			break;
 		case MIM_DATA:
+		{
+			auto status = static_cast<uint8_t>(dwParam1 & 0xff);
+			auto data0 = static_cast<uint8_t>((dwParam1 >> 8) & 0xff);
+			auto data1 = static_cast<uint8_t>((dwParam1 >> 16) & 0xff);
+			m_functions.dataReceived(status, data0, data1, static_cast<uint32_t>(dwParam2));
+		}
 			break;
 		default:
 			break;
@@ -52,7 +58,8 @@ public:
 
 	}
 	~MidiInputCoreImpl() {
-
+		midiInStop(m_handle);
+		midiInClose(m_handle);
 	}
 
 	bool Initialize(uint32_t deviceId) {
@@ -62,6 +69,10 @@ public:
 			reinterpret_cast<DWORD_PTR>(&MidiInProc),
 			reinterpret_cast<DWORD_PTR>(this),
 			CALLBACK_FUNCTION);
+		if (resultCode != MMSYSERR_NOERROR) {
+			return false;
+		}
+		resultCode = midiInStart(m_handle);
 		return resultCode == MMSYSERR_NOERROR;
 	}
 
@@ -83,6 +94,11 @@ MidiInputCore::~MidiInputCore()
 void MidiInputCore::SetCallback(MidiCallbackFunctions & functions)
 {
 	m_pImpl->SetCallback(functions);
+}
+
+bool MidiInputCore::Initialize(uint32_t deviceId)
+{
+	return m_pImpl->Initialize(deviceId);
 }
 
 uint32_t MidiInputCore::GetNumDevices()

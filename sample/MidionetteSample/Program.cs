@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MidionetteSample
@@ -18,6 +19,7 @@ namespace MidionetteSample
             {
                 Console.WriteLine(device.Name);
             }
+            Console.WriteLine(input.Initialize(0));
             Console.ReadKey();
         }
 
