@@ -31,8 +31,10 @@ private:
 		switch (wMsg)
 		{
 		case MIM_OPEN:
+			m_functions.opened();
 			break;
 		case MIM_CLOSE:
+			m_functions.closed();
 			break;
 		case MIM_DATA:
 			break;
@@ -42,6 +44,7 @@ private:
 	}
 
 	HMIDIIN m_handle;
+	MidiCallbackFunctions m_functions;
 
 public:
 
@@ -61,9 +64,15 @@ public:
 			CALLBACK_FUNCTION);
 		return resultCode == MMSYSERR_NOERROR;
 	}
+
+	void SetCallback(MidiCallbackFunctions & functions)
+	{
+		m_functions = functions;
+	}
+
 };
 
-MidiInputCore::MidiInputCore()
+MidiInputCore::MidiInputCore():m_pImpl(std::make_unique<MidiInputCoreImpl>())
 {
 }
 
@@ -73,6 +82,28 @@ MidiInputCore::~MidiInputCore()
 
 void MidiInputCore::SetCallback(MidiCallbackFunctions & functions)
 {
+	m_pImpl->SetCallback(functions);
+}
+
+uint32_t MidiInputCore::GetNumDevices()
+{
+	return midiInGetNumDevs();
+}
+
+void MidiInputCore::GetDevices(std::vector<MidiDevice>& devices)
+{
+	auto num = midiInGetNumDevs();
+	for (auto i = 0U; i < num; i++) {
+		MIDIINCAPS info;
+		auto result=midiInGetDevCaps(i, &info, sizeof(info));
+		if (result == MMSYSERR_NOERROR) {
+			MidiDevice device;
+			device.name = std::wstring(info.szPname);
+			device.id = i;
+			devices.emplace_back(device);
+		}
+	}
+
 }
 
 }  // namespace Unmanaged

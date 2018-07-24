@@ -24,6 +24,11 @@ public:
 	property uint32_t Timestamp;
 };
 
+public value struct DeviceInfo {
+	property uint32_t Id;
+	property System::String^ Name;
+};
+
 public ref class MidiDataEventArgs :System::EventArgs {
 public:
 	property MidiData Data;
@@ -82,6 +87,22 @@ public:
 		this->!MidiInput();
 	}
 
+	static System::UInt32 GetNumDevices() {
+		return Unmanaged::MidiInputCore::GetNumDevices();
+	}
+
+	static System::Collections::Generic::List<DeviceInfo>^ GetDevices() {
+		auto list = gcnew System::Collections::Generic::List<DeviceInfo>(10);
+		std::vector<Unmanaged::MidiDevice> devices;
+		Unmanaged::MidiInputCore::GetDevices(devices);
+		for (auto& device : devices) {
+			auto managed = DeviceInfo();
+			managed.Id = device.id;
+			managed.Name = msclr::interop::marshal_as<System::String^>(device.name);
+			list->Add(managed);
+		}
+		return list;
+	}
 };
 
 }
