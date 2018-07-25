@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidionetteSample", "MidionetteSample\MidionetteSample.csproj", "{63A84A93-C2F9-4789-A411-0C6377314D3B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Midionette", "..\src\Midionette\Midionette.vcxproj", "{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Midionette.Device", "..\src\Midionette.Device\Midionette.Device.vcxproj", "{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

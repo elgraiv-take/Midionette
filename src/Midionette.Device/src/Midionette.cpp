@@ -36,10 +36,12 @@ public value struct DeviceInfo {
 };
 
 public ref class MidiDataEventArgs :System::EventArgs {
+private:
+	MidiData _data;
 public:
-	property MidiData Data;
+	property MidiData Data { MidiData get() { return _data; }};
 	MidiDataEventArgs(MidiData data) {
-		Data = data;
+		_data = data;
 	}
 
 };
@@ -71,7 +73,7 @@ private:
 	}
 
 public:
-	MidiInput() {
+	MidiInput():_core(nullptr) {
 		_core = new Unmanaged::MidiInputCore();
 
 		Unmanaged::MidiCallbackFunctions functions;
@@ -84,6 +86,12 @@ public:
 		_core->SetCallback(functions);
 	}
 
+	property System::String^ Name{
+		System::String^ get() {
+			return msclr::interop::marshal_as<System::String^>(_core->GetName());
+		}
+
+	}
 
 	!MidiInput() {
 
@@ -93,6 +101,20 @@ public:
 		delete _core;
 		_core = nullptr;
 		this->!MidiInput();
+	}
+
+	bool Start() {
+		if (_core) {
+			return _core->Start();
+		}
+		return false;
+	}
+
+	bool Stop() {
+		if (_core) {
+			return _core->Stop();
+		}
+		return false;
 	}
 
 	bool Initialize(System::UInt32 deviceId) {

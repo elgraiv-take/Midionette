@@ -34,8 +34,13 @@ public:
 	MidiInputCore();
 	~MidiInputCore();
 
-	void SetCallback(MidiCallbackFunctions& functions);
+	void SetCallback(const MidiCallbackFunctions& functions);
 	bool Initialize(uint32_t deviceId);
+
+	bool Start();
+	bool Stop();
+
+	const std::wstring& GetName()const;
 
 	static uint32_t GetNumDevices();
 	static void GetDevices(std::vector<MidiDevice>& devices);

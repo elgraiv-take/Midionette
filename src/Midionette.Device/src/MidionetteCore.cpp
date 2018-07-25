@@ -51,36 +51,63 @@ private:
 
 	HMIDIIN m_handle;
 	MidiCallbackFunctions m_functions;
+	std::wstring m_name;
 
 public:
 
 	MidiInputCoreImpl() {
-
 	}
 	~MidiInputCoreImpl() {
-		midiInStop(m_handle);
 		midiInClose(m_handle);
 	}
 
 	bool Initialize(uint32_t deviceId) {
-		auto resultCode = midiInOpen(
-			&m_handle,
-			deviceId,
-			reinterpret_cast<DWORD_PTR>(&MidiInProc),
-			reinterpret_cast<DWORD_PTR>(this),
-			CALLBACK_FUNCTION);
-		if (resultCode != MMSYSERR_NOERROR) {
-			return false;
+		
+		{
+			auto resultCode = midiInOpen(
+				&m_handle,
+				deviceId,
+				reinterpret_cast<DWORD_PTR>(&MidiInProc),
+				reinterpret_cast<DWORD_PTR>(this),
+				CALLBACK_FUNCTION);
+			if (resultCode != MMSYSERR_NOERROR) {
+				return false;
+			}
 		}
-		resultCode = midiInStart(m_handle);
-		return resultCode == MMSYSERR_NOERROR;
+		{
+			MIDIINCAPS info;
+			auto resultCode = midiInGetDevCaps(deviceId, &info, sizeof(info));
+			if (resultCode != MMSYSERR_NOERROR) {
+				return false;
+			}
+			m_name = std::wstring(info.szPname);
+		}
+		return true;
 	}
 
-	void SetCallback(MidiCallbackFunctions & functions)
+	void SetCallback(const MidiCallbackFunctions & functions)
 	{
 		m_functions = functions;
 	}
 
+	bool Start() {
+		if (!m_handle) {
+			return false;
+		}
+		auto resultCode = midiInStart(m_handle);
+		return resultCode == MMSYSERR_NOERROR;
+	}
+	bool Stop() {
+		if (!m_handle) {
+			return false;
+		}
+		auto resultCode = midiInStop(m_handle);
+		return resultCode == MMSYSERR_NOERROR;
+	}
+
+	const std::wstring& GetName() const {
+		return m_name;
+	}
 };
 
 MidiInputCore::MidiInputCore():m_pImpl(std::make_unique<MidiInputCoreImpl>())
@@ -91,7 +118,7 @@ MidiInputCore::~MidiInputCore()
 {
 }
 
-void MidiInputCore::SetCallback(MidiCallbackFunctions & functions)
+void MidiInputCore::SetCallback(const MidiCallbackFunctions & functions)
 {
 	m_pImpl->SetCallback(functions);
 }
@@ -99,6 +126,21 @@ void MidiInputCore::SetCallback(MidiCallbackFunctions & functions)
 bool MidiInputCore::Initialize(uint32_t deviceId)
 {
 	return m_pImpl->Initialize(deviceId);
+}
+
+bool MidiInputCore::Start()
+{
+	return false;
+}
+
+bool MidiInputCore::Stop()
+{
+	return false;
+}
+
+const std::wstring& MidiInputCore::GetName() const
+{
+	return m_pImpl->GetName();
 }
 
 uint32_t MidiInputCore::GetNumDevices()
