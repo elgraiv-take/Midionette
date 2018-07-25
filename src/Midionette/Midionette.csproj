@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5282753B-F85D-40A7-83AB-61C1FE060905}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Elgraiv.Midionette.Controller</RootNamespace>
-    <AssemblyName>Elgraiv.Midionette.Controller</AssemblyName>
+    <RootNamespace>Elgraiv.Midionette</RootNamespace>
+    <AssemblyName>Elgraiv.Midionette</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

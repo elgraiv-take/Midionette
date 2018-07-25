@@ -9,14 +9,15 @@
 
 namespace Elgraiv{
 namespace Midionette{
+namespace Device {
 namespace {
 std::function<void()> CreateCallback(gcroot<System::Action^>& del) {
 	return [del]() {del->Invoke(); };
 }
 
-Unmanaged::DataReceivedCallback CreateCallback(gcroot<System::Action<uint8_t,uint8_t,uint8_t,uint32_t>^>& del) {
+Unmanaged::DataReceivedCallback CreateCallback(gcroot<System::Action<uint8_t, uint8_t, uint8_t, uint32_t>^>& del) {
 	return [del](uint8_t status, uint8_t data0, uint8_t data1, uint32_t timestamp) {
-		del->Invoke(status, data0, data1, timestamp); 
+		del->Invoke(status, data0, data1, timestamp);
 	};
 }
 
@@ -73,11 +74,11 @@ private:
 	}
 
 public:
-	MidiInput():_core(nullptr) {
+	MidiInput() :_core(nullptr) {
 		_core = new Unmanaged::MidiInputCore();
 
 		Unmanaged::MidiCallbackFunctions functions;
-		gcroot<System::Action^> actionOpened(gcnew System::Action(this,&MidiInput::OnMidiOpened));
+		gcroot<System::Action^> actionOpened(gcnew System::Action(this, &MidiInput::OnMidiOpened));
 		functions.opened = CreateCallback(actionOpened);
 		gcroot<System::Action^> actionClosed(gcnew System::Action(this, &MidiInput::OnMidiClosed));
 		functions.closed = CreateCallback(actionClosed);
@@ -86,7 +87,7 @@ public:
 		_core->SetCallback(functions);
 	}
 
-	property System::String^ Name{
+	property System::String^ Name {
 		System::String^ get() {
 			return msclr::interop::marshal_as<System::String^>(_core->GetName());
 		}
@@ -141,6 +142,6 @@ public:
 		return list;
 	}
 };
-
+}
 }
 }

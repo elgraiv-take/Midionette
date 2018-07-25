@@ -1,4 +1,4 @@
-﻿using Elgraiv.Midionette;
+﻿using Elgraiv.Midionette.Device;
 using System;
 using System.Collections.Generic;
 using System.Linq;
