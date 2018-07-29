@@ -51,7 +51,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Midionette.Device\Midionette.Device.vcxproj">
       <Project>{1d3ff3e7-068f-4c2a-a526-1a3a7c6748bb}</Project>
-      <Name>Midionette</Name>
+      <Name>Midionette.Device</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

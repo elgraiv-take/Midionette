@@ -19,7 +19,7 @@ namespace MidionetteSample
             {
                 Console.WriteLine(device.Name);
             }
-            Console.WriteLine(input.Initialize(0));
+            Console.WriteLine(input.Initialize(1));
             input.Start();
             Console.WriteLine(input.Name);
             Console.ReadKey();
