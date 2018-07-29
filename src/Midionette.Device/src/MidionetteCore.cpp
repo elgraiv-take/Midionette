@@ -130,12 +130,12 @@ bool MidiInputCore::Initialize(uint32_t deviceId)
 
 bool MidiInputCore::Start()
 {
-	return false;
+	return m_pImpl->Start();
 }
 
 bool MidiInputCore::Stop()
 {
-	return false;
+	return m_pImpl->Stop();
 }
 
 const std::wstring& MidiInputCore::GetName() const
