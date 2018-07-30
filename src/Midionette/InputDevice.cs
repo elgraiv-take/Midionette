@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Elgraiv.Midionette
 {
-    public class InputDevice
+    public class InputDevice : IDisposable
     {
 
         private Device.MidiInput _midiDevice;
-        public string Name
-        {
-            get
-            {
-                return _midiDevice.Name;
-            }
-        }
+        public string Name { get; }
+        public bool IsOpened { get; private set; } = false;
 
         private Dictionary<byte, IValueReceiver>[] _receiverMap;
         
@@ -26,19 +22,23 @@ namespace Elgraiv.Midionette
             {
                 for (byte i = 0; i < MidiConstant.MidiMaxChannelNum; i++)
                 {
-                    foreach(var pair in _receiverMap[i])
+                    lock (_receiverMap[i])
                     {
-                        if (pair.Value is NullValueReceiver)
+                        foreach (var pair in _receiverMap[i])
                         {
-                            yield return (i, pair.Key);
+                            if (pair.Value is NullValueReceiver)
+                            {
+                                yield return (i, pair.Key);
+                            }
                         }
                     }
                 }
             }
         }
 
-        internal InputDevice()
+        internal InputDevice(string name)
         {
+            Name = name;
             _midiDevice = new Device.MidiInput();
             _midiDevice.MidiDataReceived += OnMidiDataReceived;
             _receiverMap = new Dictionary<byte, IValueReceiver>[MidiConstant.MidiMaxChannelNum];
@@ -47,6 +47,27 @@ namespace Elgraiv.Midionette
                 _receiverMap[i] = new Dictionary<byte, IValueReceiver>();
             }
         }
+
+        internal bool OpenMidiDevice()
+        {
+            var devices = Device.MidiInput.GetDevices();
+            var deviceInfo=devices.Where((info) => info.Name.Equals(Name)).FirstOrDefault();
+            if (string.IsNullOrEmpty(deviceInfo.Name))
+            {
+                return false;
+            }
+            if (!_midiDevice.Initialize(deviceInfo.Id))
+            {
+                return false;
+            }
+            if (!_midiDevice.Start())
+            {
+                return false;
+            }
+            IsOpened = true;
+            return true;
+        }
+
 
         private void OnMidiDataReceived(object sender, Device.MidiDataEventArgs e)
         {
@@ -57,15 +78,18 @@ namespace Elgraiv.Midionette
                 )
             {
                 var channel = e.Data.Status - MidiConstant.CommandIdControlChange;
-
-                if(_receiverMap[channel].TryGetValue(e.Data.MidiData0,out IValueReceiver receiver))
+                lock (_receiverMap[channel])
                 {
-                    receiver.OnValueReceived(e.Data.MidiData1);
+                    if (_receiverMap[channel].TryGetValue(e.Data.MidiData0, out IValueReceiver receiver))
+                    {
+                        receiver.OnValueReceived(e.Data.MidiData1);
+                    }
+                    else
+                    {
+                        _receiverMap[channel].Add(e.Data.MidiData1, NullValueReceiver.Value);
+                    }
                 }
-                else
-                {
-                    _receiverMap[channel].Add(e.Data.MidiData1, NullValueReceiver.Value);
-                }
+                
                 
             }
         }
@@ -76,13 +100,37 @@ namespace Elgraiv.Midionette
             {
                 throw new ArgumentException("Channel MUST be 0~15",nameof(channel));
             }
-            _receiverMap[channel].Add(type, receiver);
+            lock (_receiverMap[channel])
+            {
+                _receiverMap[channel].Add(type, receiver);
+            }
+                
         }
 
         public void ClearNonAssigneed()
         {
 
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _midiDevice.Dispose();
+                }
+                disposedValue = true;
+            }
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        #endregion
 
     }
 }
