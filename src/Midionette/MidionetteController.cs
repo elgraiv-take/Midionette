@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,12 @@ namespace Elgraiv.Midionette
                 _deviceMap.Add(deviceName, device);
             }
             return device;
+        }
+
+        public static ReadOnlyCollection<string> GetConnectedDevices()
+        {
+            var devices = new List<string>(Device.MidiInput.GetDevices().Select(device => device.Name));
+            return devices.AsReadOnly();
         }
 
         #region IDisposable Support

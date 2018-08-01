@@ -7,23 +7,51 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidionetteSample", "Midione
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Midionette.Device", "..\src\Midionette.Device\Midionette.Device.vcxproj", "{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Midionette", "..\src\Midionette\Midionette.csproj", "{5282753B-F85D-40A7-83AB-61C1FE060905}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{44AA16CA-B51A-4BFB-8FC4-9A480FB663A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidionetteSampleGui", "MidionetteSampleGui\MidionetteSampleGui.csproj", "{F8DAE218-19EC-495D-8BDD-1DD4DD10493E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63A84A93-C2F9-4789-A411-0C6377314D3B}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{63A84A93-C2F9-4789-A411-0C6377314D3B}.Debug|x64.ActiveCfg = Debug|x64
 		{63A84A93-C2F9-4789-A411-0C6377314D3B}.Debug|x64.Build.0 = Debug|x64
+		{63A84A93-C2F9-4789-A411-0C6377314D3B}.Release|Any CPU.ActiveCfg = Release|x64
 		{63A84A93-C2F9-4789-A411-0C6377314D3B}.Release|x64.ActiveCfg = Release|x64
 		{63A84A93-C2F9-4789-A411-0C6377314D3B}.Release|x64.Build.0 = Release|x64
+		{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB}.Debug|x64.ActiveCfg = Debug|x64
 		{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB}.Debug|x64.Build.0 = Debug|x64
+		{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB}.Release|Any CPU.ActiveCfg = Release|x64
 		{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB}.Release|x64.ActiveCfg = Release|x64
 		{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB}.Release|x64.Build.0 = Release|x64
+		{5282753B-F85D-40A7-83AB-61C1FE060905}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{5282753B-F85D-40A7-83AB-61C1FE060905}.Debug|x64.ActiveCfg = Debug|x64
+		{5282753B-F85D-40A7-83AB-61C1FE060905}.Debug|x64.Build.0 = Debug|x64
+		{5282753B-F85D-40A7-83AB-61C1FE060905}.Release|Any CPU.ActiveCfg = Release|x64
+		{5282753B-F85D-40A7-83AB-61C1FE060905}.Release|x64.ActiveCfg = Release|x64
+		{5282753B-F85D-40A7-83AB-61C1FE060905}.Release|x64.Build.0 = Release|x64
+		{F8DAE218-19EC-495D-8BDD-1DD4DD10493E}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{F8DAE218-19EC-495D-8BDD-1DD4DD10493E}.Debug|x64.ActiveCfg = Debug|x64
+		{F8DAE218-19EC-495D-8BDD-1DD4DD10493E}.Debug|x64.Build.0 = Debug|x64
+		{F8DAE218-19EC-495D-8BDD-1DD4DD10493E}.Release|Any CPU.ActiveCfg = Release|x64
+		{F8DAE218-19EC-495D-8BDD-1DD4DD10493E}.Release|x64.ActiveCfg = Release|x64
+		{F8DAE218-19EC-495D-8BDD-1DD4DD10493E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1D3FF3E7-068F-4C2A-A526-1A3A7C6748BB} = {44AA16CA-B51A-4BFB-8FC4-9A480FB663A6}
+		{5282753B-F85D-40A7-83AB-61C1FE060905} = {44AA16CA-B51A-4BFB-8FC4-9A480FB663A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E1E0EA04-3150-4EAB-B848-1382D9B77FB6}
