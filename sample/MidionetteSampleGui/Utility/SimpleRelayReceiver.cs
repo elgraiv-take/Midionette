@@ -24,7 +24,8 @@ namespace MidionetteSampleGui.Utility
 
         public void OnValueReceived(byte value)
         {
-            _setter.Invoke(_target, new object[] { value });
+            var floatValue = value / 127.0f;
+            _setter.Invoke(_target, new object[] { floatValue });
         }
 
     }

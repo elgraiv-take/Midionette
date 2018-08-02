@@ -57,7 +57,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\InputModel.cs" />
-    <Compile Include="Utility\SimpleRelay.cs" />
+    <Compile Include="Model\MainModel.cs" />
+    <Compile Include="Utility\DelegateCommand.cs" />
+    <Compile Include="Utility\SimpleRelayReceiver.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -98,9 +101,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModel\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\src\Midionette\Midionette.csproj">
       <Project>{5282753b-f85d-40a7-83ab-61c1fe060905}</Project>

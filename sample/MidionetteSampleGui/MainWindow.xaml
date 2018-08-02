@@ -7,7 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Refresh" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Refresh" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Command="{Binding Path=RefreshCommand}"/>
+        <ListBox ItemsSource="{Binding Path=DeviceNames}" HorizontalAlignment="Left" Height="120" Margin="90,10,0,0" VerticalAlignment="Top" Width="270"/>
+        <Slider HorizontalAlignment="Left" Margin="412,12,0,0" VerticalAlignment="Top" Width="282" Maximum="1" LargeChange="0.1" Value="{Binding Path=Value0}"/>
 
     </Grid>
 </Window>
