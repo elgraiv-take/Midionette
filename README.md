@@ -1,4 +1,5 @@
 # Midionette
+## 概要
 MIDIデバイスをアプリケーションの入力として使うためのライブラリ
 
 - C++/CLIとC#での実装
@@ -6,3 +7,6 @@ MIDIデバイスをアプリケーションの入力として使うためのラ�
 - .NET Framework 4.7以降
 - MIDIのOUTに対応する予定はない
   - あくまで入力用
+  
+## 使い方
+MidionetteSampleGuiのModel
