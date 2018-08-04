@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="DelegateValueReceiver.cs" />
     <Compile Include="FloatPropertyValueReceiver.cs" />
+    <Compile Include="MidiMessageTarget.cs" />
     <Compile Include="MidionetteInputDevice.cs" />
     <Compile Include="IValueReceiver.cs" />
     <Compile Include="MessageTypeEventArgs.cs" />
