@@ -9,26 +9,29 @@ namespace Elgraiv.Midionette
 {
     public class MidionetteController:IDisposable
     {
-        private Dictionary<string, InputDevice> _deviceMap=new Dictionary<string, InputDevice>();
+        private Dictionary<string, MidionetteInputDevice> _deviceMap=new Dictionary<string, MidionetteInputDevice>();
 
-        public IEnumerable<InputDevice> OpenedDevices {
+        public IEnumerable<MidionetteInputDevice> OpenedDevices {
             get
             {
                 return _deviceMap.Values.Where(device => device.IsOpened);
             }
         }
 
-        public bool OpenDevice(string name)
+        public MidionetteInputDevice OpenDevice(string name)
         {
             var device = GetOrCreate(name);
+            if (device.IsOpened)
+            {
+                return device;
+            }
             var result = device.OpenMidiDevice();
             if (!result)
             {
                 device.Dispose();
-                return false;
+                return null;
             }
-            _deviceMap.Add(device.Name, device);
-            return true;
+            return device;
         }
 
         public void SetReceiverToControlChange(string deviceName,byte channel, byte type, IValueReceiver receiver)
@@ -37,11 +40,11 @@ namespace Elgraiv.Midionette
             device.SetReceiverToControlChange(channel, type, receiver);
         }
 
-        private InputDevice GetOrCreate(string deviceName)
+        private MidionetteInputDevice GetOrCreate(string deviceName)
         {
-            if (!_deviceMap.TryGetValue(deviceName, out InputDevice device))
+            if (!_deviceMap.TryGetValue(deviceName, out MidionetteInputDevice device))
             {
-                device = new InputDevice(deviceName);
+                device = new MidionetteInputDevice(deviceName);
                 _deviceMap.Add(deviceName, device);
             }
             return device;

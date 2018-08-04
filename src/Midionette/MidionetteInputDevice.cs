@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Elgraiv.Midionette
 {
-    public class InputDevice : IDisposable
+    public class MidionetteInputDevice : IDisposable
     {
 
         private Device.MidiInput _midiDevice;
@@ -36,7 +36,9 @@ namespace Elgraiv.Midionette
             }
         }
 
-        internal InputDevice(string name)
+        public event EventHandler<MessageTypeEventArgs> NewControlChangedDetected;
+
+        internal MidionetteInputDevice(string name)
         {
             Name = name;
             _midiDevice = new Device.MidiInput();
@@ -86,7 +88,8 @@ namespace Elgraiv.Midionette
                     }
                     else
                     {
-                        _receiverMap[channel].Add(e.Data.MidiData1, NullValueReceiver.Value);
+                        _receiverMap[channel].Add(e.Data.MidiData0, NullValueReceiver.Value);
+                        NewControlChangedDetected?.Invoke(this, new MessageTypeEventArgs((byte)channel, e.Data.MidiData0));
                     }
                 }
                 
@@ -102,7 +105,7 @@ namespace Elgraiv.Midionette
             }
             lock (_receiverMap[channel])
             {
-                _receiverMap[channel].Add(type, receiver);
+                _receiverMap[channel][type]=receiver;
             }
                 
         }

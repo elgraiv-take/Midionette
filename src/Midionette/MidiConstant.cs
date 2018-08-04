@@ -8,7 +8,7 @@ namespace Elgraiv.Midionette
 {
     public class MidiConstant
     {
-        public static readonly int MidiMaxChannelNum = 16;
-        public static readonly int CommandIdControlChange = 176;
+        public static readonly byte MidiMaxChannelNum = 16;
+        public static readonly byte CommandIdControlChange = 176;
     }
 }

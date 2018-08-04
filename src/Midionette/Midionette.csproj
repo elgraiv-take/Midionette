@@ -48,8 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DelegateValueReceiver.cs" />
-    <Compile Include="InputDevice.cs" />
+    <Compile Include="MidionetteInputDevice.cs" />
     <Compile Include="IValueReceiver.cs" />
+    <Compile Include="MessageTypeEventArgs.cs" />
     <Compile Include="MidiConstant.cs" />
     <Compile Include="MidiControlChangeType.cs" />
     <Compile Include="MidionetteController.cs" />
