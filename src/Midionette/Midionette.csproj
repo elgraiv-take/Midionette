@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DelegateValueReceiver.cs" />
+    <Compile Include="FloatPropertyValueReceiver.cs" />
     <Compile Include="MidionetteInputDevice.cs" />
     <Compile Include="IValueReceiver.cs" />
     <Compile Include="MessageTypeEventArgs.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="MidionetteController.cs" />
     <Compile Include="NullValueReceiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyValueReceiverBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

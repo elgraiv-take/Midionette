@@ -1,4 +1,5 @@
-﻿using MidionetteSampleGui.Utility;
+﻿using Elgraiv.Midionette;
+using MidionetteSampleGui.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace MidionetteSampleGui.Model
 
         public void AssignControlChangeToReceiver(InputModel.ControlChangeInfo target, string propertyName)
         {
-            var receiver = new SimpleRelayReceiver(SampleObject, propertyName);
+            var receiver = new FloatPropertyValueReceiver(propertyName,SampleObject, propertyName);
             Input.AssignControlChangeToReceiver(target, receiver);
         }
 

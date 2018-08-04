@@ -61,7 +61,6 @@ namespace MidionetteSampleGui.Model
 
         public SampleModel()
         {
-            _value0 = 0.5f;
         }
     }
 }

@@ -61,7 +61,6 @@
     <Compile Include="Model\MainModel.cs" />
     <Compile Include="Utility\ActionEventBehavior.cs" />
     <Compile Include="Utility\DelegateCommand.cs" />
-    <Compile Include="Utility\SimpleRelayReceiver.cs" />
     <Compile Include="ViewModel\ControlChangeValueConverter.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Page Include="MainWindow.xaml">
