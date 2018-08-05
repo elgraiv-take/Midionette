@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Elgraiv.Midionette.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,15 +12,16 @@ namespace Elgraiv.Midionette
         public string Name { get; }
         public bool IsOpened { get; private set; } = false;
 
-        private Dictionary<MidiMessageTarget, IValueReceiver> _receiverMap;
+        private Dictionary<MidiMessageTarget, IValueReceiver> _valueReceiverMap;
+        private Dictionary<MidiMessageTarget, IKeyReceiver> _keyReceiverMap;
 
         public IEnumerable<MidiMessageTarget> NonAssignedControlChange
         {
             get
             {
-                lock (_receiverMap)
+                lock (_valueReceiverMap)
                 {
-                    foreach (var pair in _receiverMap)
+                    foreach (var pair in _valueReceiverMap)
                     {
                         if (pair.Value is NullValueReceiver)
                         {
@@ -31,13 +33,15 @@ namespace Elgraiv.Midionette
         }
 
         public event EventHandler<MessageTypeEventArgs> NewControlChangedDetected;
+        public event EventHandler<MessageTypeEventArgs> NewNoteDetected;
 
         internal MidionetteInputDevice(string name)
         {
             Name = name;
             _midiDevice = new Device.MidiInput();
             _midiDevice.MidiDataReceived += OnMidiDataReceived;
-            _receiverMap = new Dictionary<MidiMessageTarget, IValueReceiver>();
+            _valueReceiverMap = new Dictionary<MidiMessageTarget, IValueReceiver>();
+            _keyReceiverMap = new Dictionary<MidiMessageTarget, IKeyReceiver>();
         }
 
         internal bool OpenMidiDevice()
@@ -72,19 +76,48 @@ namespace Elgraiv.Midionette
         {
             //ひとまず単純なコントロールチェンジ
             var type = GetCommandType(e.Data.Status, out byte channel);
+            var target = new MidiMessageTarget(channel, e.Data.MidiData0);
             switch (type)
             {
                 case CommandType.ControlChange:
-                    lock (_receiverMap)
+                    lock (_valueReceiverMap)
                     {
-                        if (_receiverMap.TryGetValue(new MidiMessageTarget(channel, e.Data.MidiData0), out IValueReceiver receiver))
+                        if (_valueReceiverMap.TryGetValue(target, out IValueReceiver receiver))
                         {
                             receiver.OnValueReceived(e.Data.MidiData1);
                         }
                         else
                         {
-                            _receiverMap.Add(new MidiMessageTarget(channel, e.Data.MidiData0), NullValueReceiver.Value);
+                            _valueReceiverMap.Add(target, NullValueReceiver.Value);
                             NewControlChangedDetected?.Invoke(this, new MessageTypeEventArgs(channel, e.Data.MidiData0));
+                        }
+                    }
+                    break;
+                case CommandType.NoteOn:
+                    lock (_keyReceiverMap)
+                    {
+                        if(_keyReceiverMap.TryGetValue(target,out IKeyReceiver receiver))
+                        {
+                            receiver.OnKeyDown(e.Data.MidiData1);
+                        }
+                        else
+                        {
+                            _keyReceiverMap.Add(target, NullKeyReceiver.Value);
+                            NewNoteDetected?.Invoke(this, new MessageTypeEventArgs(channel, e.Data.MidiData0));
+                        }
+                    }
+                    break;
+                case CommandType.NoteOff:
+                    lock (_keyReceiverMap)
+                    {
+                        if (_keyReceiverMap.TryGetValue(target, out IKeyReceiver receiver))
+                        {
+                            receiver.OnKeyUp(e.Data.MidiData1);
+                        }
+                        else
+                        {
+                            _keyReceiverMap.Add(target, NullKeyReceiver.Value);
+                            NewNoteDetected?.Invoke(this, new MessageTypeEventArgs(channel, e.Data.MidiData0));
                         }
                     }
                     break;
@@ -115,13 +148,34 @@ namespace Elgraiv.Midionette
 
         public void SetReceiverToControlChange(byte channel, byte type, IValueReceiver receiver)
         {
+            if (receiver == null)
+            {
+                throw new ArgumentNullException(nameof(receiver));
+            }
             if (!(channel < MidiConstant.MidiMaxChannelNum))
             {
                 throw new ArgumentException("Channel MUST be 0~15", nameof(channel));
             }
-            lock (_receiverMap)
+            lock (_valueReceiverMap)
             {
-                _receiverMap[new MidiMessageTarget(channel, type)] = receiver;
+                _valueReceiverMap[new MidiMessageTarget(channel, type)] = receiver;
+            }
+
+        }
+
+        public void SetReceiverToNote(byte channel, byte type, IKeyReceiver receiver)
+        {
+            if (receiver == null)
+            {
+                throw new ArgumentNullException(nameof(receiver));
+            }
+            if (!(channel < MidiConstant.MidiMaxChannelNum))
+            {
+                throw new ArgumentException("Channel MUST be 0~15", nameof(channel));
+            }
+            lock (_keyReceiverMap)
+            {
+                _keyReceiverMap[new MidiMessageTarget(channel, type)] = receiver;
             }
 
         }

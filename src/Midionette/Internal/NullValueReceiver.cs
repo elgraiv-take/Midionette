@@ -1,4 +1,4 @@
-﻿namespace Elgraiv.Midionette
+﻿namespace Elgraiv.Midionette.Internal
 {
     internal class NullValueReceiver : IValueReceiver
     {

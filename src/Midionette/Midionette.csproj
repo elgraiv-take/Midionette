@@ -47,8 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoolPropertyKeyReceiver.cs" />
+    <Compile Include="DelegateKeyReceiver.cs" />
     <Compile Include="DelegateValueReceiver.cs" />
     <Compile Include="FloatPropertyValueReceiver.cs" />
+    <Compile Include="IKeyReceiver.cs" />
+    <Compile Include="Internal\NullKeyReceiver.cs" />
     <Compile Include="MidiMessageTarget.cs" />
     <Compile Include="MidionetteInputDevice.cs" />
     <Compile Include="IValueReceiver.cs" />
@@ -56,7 +60,7 @@
     <Compile Include="MidiConstant.cs" />
     <Compile Include="MidiControlChangeType.cs" />
     <Compile Include="MidionetteController.cs" />
-    <Compile Include="NullValueReceiver.cs" />
+    <Compile Include="Internal\NullValueReceiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyValueReceiverBase.cs" />
   </ItemGroup>

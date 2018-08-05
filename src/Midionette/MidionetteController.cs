@@ -37,15 +37,23 @@ namespace Elgraiv.Midionette
             var device = GetOrCreate(deviceName);
             device.SetReceiverToControlChange(channel, type, receiver);
         }
+        public void SetReceiverToNote(string deviceName, byte channel, byte type, IKeyReceiver receiver)
+        {
+            var device = GetOrCreate(deviceName);
+            device.SetReceiverToNote(channel, type, receiver);
+        }
 
         private MidionetteInputDevice GetOrCreate(string deviceName)
         {
-            if (!_deviceMap.TryGetValue(deviceName, out MidionetteInputDevice device))
+            lock (_deviceMap)
             {
-                device = new MidionetteInputDevice(deviceName);
-                _deviceMap.Add(deviceName, device);
+                if (!_deviceMap.TryGetValue(deviceName, out MidionetteInputDevice device))
+                {
+                    device = new MidionetteInputDevice(deviceName);
+                    _deviceMap.Add(deviceName, device);
+                }
+                return device;
             }
-            return device;
         }
 
         public static ReadOnlyCollection<string> GetConnectedDevices()
