@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoolPropertyKeyReceiver.cs" />
+    <Compile Include="BoolPropertyValueReceiver.cs" />
     <Compile Include="DelegateKeyReceiver.cs" />
     <Compile Include="DelegateValueReceiver.cs" />
     <Compile Include="FloatPropertyValueReceiver.cs" />
